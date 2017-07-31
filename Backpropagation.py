@@ -23,34 +23,34 @@ x = np.array([0.5, 0.1, -0.2])
 target = 0.6
 learnrate = 0.5
 
-weights_input_hidden = np.array([[0.5, -0.6],
-                                 [0.1, -0.2],
-                                 [0.1, 0.7]])
+w1 = np.array([[0.5, -0.6],
+             [0.1, -0.2],
+             [0.1, 0.7]])
 
-weights_hidden_output = np.array([0.1, -0.3])
+w2 = np.array([0.1, -0.3])
 
 ## Forward pass
-hidden_layer_input = np.dot(x, weights_input_hidden)
-hidden_layer_output = sigmoid(hidden_layer_input)
+a1=x
 
-output_layer_in = np.dot(hidden_layer_output, weights_hidden_output)
-output = sigmoid(output_layer_in)
+a2=sigmoid(np.dot(a1, w1))
+
+a3 = sigmoid(np.dot(a2, w2))
 
 ## Backwards pass
 ## TODO: Calculate error
-error = (target-output)*sigmoid_prime(output_layer_in)
+error = (target-a3)
 
 # TODO: Calculate error gradient for output layer
-del_err_output = error*weights_hidden_output*sigmoid(weights_input_hidden[:,1])
+d3 = del_err_output = np.multiply(error,sigmoid_prime(np.dot(a2, w2)) )
 
 # TODO: Calculate error gradient for hidden layer
-del_err_hidden = None
+d2 = del_err_hidden = np.multiply(d3*w2,sigmoid_prime(np.dot(a1, w1)) )
 
 # TODO: Calculate change in weights for hidden layer to output layer
-delta_w_h_o = None
+Delta_2 = delta_w_h_o = learnrate*d3*a2
 
 # TODO: Calculate change in weights for input layer to hidden layer
-delta_w_i_h = None
+Delta_1 = delta_w_i_h = a1[:,None]*learnrate*d2
 
 print('Change in weights for hidden layer to output layer:')
 print(delta_w_h_o)
